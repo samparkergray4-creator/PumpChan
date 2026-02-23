@@ -1089,11 +1089,101 @@ httpServer.listen(PORT, () => {
 ╚═══════════════════════════════════════════╝
   `);
   startFeeClaimTimer(connection);
+  watchSiteToken();
 });
+
+// Boost watcher polling to 1 second (call from browser before launch)
+app.get('/api/admin/boost-watcher', (req, res) => {
+  const secret = req.query.secret;
+  if (!ADMIN_SECRET || secret !== ADMIN_SECRET) {
+    return res.status(401).json({ success: false, error: 'Unauthorized' });
+  }
+  if (!siteTokenWatcherTimer) {
+    return res.json({ success: false, message: 'Watcher not running (token may already be listed)' });
+  }
+  clearInterval(siteTokenWatcherTimer);
+  siteTokenWatcherTimer = setInterval(async () => {
+    try {
+      const res2 = await fetch(`https://frontend-api.pump.fun/coins/${SITE_TOKEN_MINT}`);
+      if (!res2.ok) return;
+      const coin = await res2.json();
+      if (!coin || !coin.name) return;
+      console.log(`🎉 Site token detected on pump.fun! Creating thread...`);
+      clearInterval(siteTokenWatcherTimer);
+      siteTokenWatcherTimer = null;
+      let imageUrl = coin.image_uri || coin.image || '';
+      if (imageUrl.startsWith('https://ipfs.io/ipfs/')) {
+        imageUrl = `/api/image/${imageUrl.replace('https://ipfs.io/ipfs/', '')}`;
+      }
+      await createThreadForCoin(SITE_TOKEN_MINT, {
+        name: coin.name, symbol: coin.symbol,
+        description: coin.description || '', image: imageUrl,
+        creatorUsername: 'PumpChan', twitter: coin.twitter || '',
+        board: 'random', devBuyAmount: 0
+      });
+      console.log(`✅ Site token thread created: /thread/${SITE_TOKEN_MINT}`);
+    } catch (err) { /* not live yet */ }
+  }, 1000);
+  console.log('🚀 Site token watcher boosted to 1 second polling');
+  res.json({ success: true, message: 'Watcher boosted to 1 second polling' });
+});
+
+// ===== SITE TOKEN AUTO-WATCHER =====
+// Polls pump.fun for the PumpChan site token and auto-creates its thread the moment it goes live.
+
+const SITE_TOKEN_MINT = '2wJwYPgSJnorvNqnQft4vFmR1YaWL6rmLbwUWSa9pump';
+let siteTokenWatcherTimer = null;
+
+async function watchSiteToken() {
+  // Check if thread already exists
+  try {
+    const existing = await getThread(SITE_TOKEN_MINT);
+    if (existing) {
+      console.log('✅ Site token thread already exists, watcher not needed.');
+      return;
+    }
+  } catch (e) { /* continue */ }
+
+  console.log(`👀 Watching for site token: ${SITE_TOKEN_MINT}`);
+  siteTokenWatcherTimer = setInterval(async () => {
+    try {
+      const res = await fetch(`https://frontend-api.pump.fun/coins/${SITE_TOKEN_MINT}`);
+      if (!res.ok) return;
+      const coin = await res.json();
+      if (!coin || !coin.name) return;
+
+      console.log(`🎉 Site token detected on pump.fun! Creating thread...`);
+      clearInterval(siteTokenWatcherTimer);
+      siteTokenWatcherTimer = null;
+
+      // Build image URL from IPFS metadata if available
+      let imageUrl = coin.image_uri || coin.image || '';
+      if (imageUrl.startsWith('https://ipfs.io/ipfs/')) {
+        imageUrl = `/api/image/${imageUrl.replace('https://ipfs.io/ipfs/', '')}`;
+      }
+
+      await createThreadForCoin(SITE_TOKEN_MINT, {
+        name: coin.name,
+        symbol: coin.symbol,
+        description: coin.description || '',
+        image: imageUrl,
+        creatorUsername: 'PumpChan',
+        twitter: coin.twitter || '',
+        board: 'random',
+        devBuyAmount: 0
+      });
+
+      console.log(`✅ Site token thread created: /thread/${SITE_TOKEN_MINT}`);
+    } catch (err) {
+      // Token not live yet, keep polling
+    }
+  }, 30000); // Poll every 30 seconds
+}
 
 // Graceful shutdown
 function handleShutdown(signal) {
   console.log(`\n${signal} received, shutting down gracefully...`);
+  if (siteTokenWatcherTimer) clearInterval(siteTokenWatcherTimer);
   stopFeeClaimTimer();
   shutdownWs();
   httpServer.close(() => {

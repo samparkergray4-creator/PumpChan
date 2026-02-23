@@ -19,7 +19,7 @@
 <!-- ===== SITE HEADER / LOGO ===== -->
 <div id="header">
   <div class="siteLogo">PumpChan</div>
-  <div class="boardSubtitle"></div>
+  <div class="boardSubtitle">Create your own 4Chan shitcoin</div>
 </div>
 
 <div id="main">
@@ -32,12 +32,11 @@
         <span class="info-box-x" onclick="document.getElementById('infoBox').style.display='none'">X</span>
       </div>
       <div class="info-box-body">
-        PumpChan is a 4chan&#8209;style memecoin launchpad built on Solana. Launch your token directly
-        to <a href="https://pump.fun" target="_blank" rel="noopener">pump.fun</a> and it instantly
-        gets its own thread where the community can shill, FUD, and reply in real time.
+        Why go searching for old 4Chan token threads when you can just make your own?
         <br><br>
-        Connect your Phantom wallet, fill out the form below, and post your thread. Each launch
-        costs <strong>0.05 SOL</strong> platform fee.
+        This is a 4Chan-style shitcoin launchpad that will launch your shitcoin directly to PumpFun. Your token will get its own thread and users can comment, shill, fud, and interact.
+        <br><br>
+        Connect your Phantom wallet, fill out the form below, and post your thread. Each launch costs <strong>0.05 SOL</strong> platform fee.
       </div>
     </div>
 
@@ -60,21 +59,21 @@
                 <th>Token Name</th>
                 <td>
                   <input type="text" id="name" name="name" size="28" maxlength="40"
-                         placeholder="e.g. Buttcoin" required autocomplete="off">
+                         placeholder="e.g. Retard Coin" required autocomplete="off">
                 </td>
               </tr>
               <tr>
                 <th>Symbol</th>
                 <td>
                   <input type="text" id="symbol" name="symbol" size="12" maxlength="10"
-                         placeholder="e.g. BUTT" required autocomplete="off">
+                         placeholder="e.g. RTC" required autocomplete="off">
                 </td>
               </tr>
               <tr>
                 <th>Comment</th>
                 <td>
                   <textarea id="description" name="description" rows="6" cols="48"
-                            placeholder="Describe your token. Why should anyone buy it?&#10;&gt; greentext your thesis like this"></textarea>
+                            placeholder="&gt;be me, bigretard.jpeg&#10;&gt;launch token on PumpChan&#10;&gt;instant 1 milly mcap"></textarea>
                 </td>
               </tr>
               <tr>
@@ -184,8 +183,25 @@
 </div>
 
 <div id="footer">
-  All tokens are real and deployed on Solana mainnet via pump.fun<br>
+  All tokens are deployed on Solana mainnet via pump.fun<br>
+  <div class="site-token-bar">
+    <span style="color:#800000; font-weight:bold;">$PUMPCHAN:</span>
+    <code id="siteTokenAddr" style="user-select:all; font-size:10px;">2wJwYPgSJnorvNqnQft4vFmR1YaWL6rmLbwUWSa9pump</code>
+    <button onclick="copySiteToken()" style="font-size:10px; padding:1px 5px; cursor:pointer; font-family:sans-serif; margin-left:4px;">Copy</button>
+    <span id="siteTokenCopied" style="color:green; font-size:10px; margin-left:4px;"></span>
+    <!-- Twitter button: set href and remove style="display:none" when ready -->
+    <a href="#" target="_blank" rel="noopener" style="display:none; margin-left:10px; font-size:11px;" id="siteTwitterBtn">&#119987; Twitter &#8599;</a>
+  </div>
 </div>
+<script>
+function copySiteToken() {
+  navigator.clipboard.writeText('2wJwYPgSJnorvNqnQft4vFmR1YaWL6rmLbwUWSa9pump').then(function() {
+    var el = document.getElementById('siteTokenCopied');
+    el.textContent = '✓ Copied!';
+    setTimeout(function() { el.textContent = ''; }, 2000);
+  });
+}
+</script>
 
 <script src="/js/ws-client.js"></script>
 <script src="/js/wallet.js"></script>

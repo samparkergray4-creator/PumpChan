@@ -21,7 +21,7 @@
 <!-- ===== BOARD HEADER ===== -->
 <div id="header">
   <div class="boardTitle">PumpChan</div>
-  <div class="boardSubtitle"></div>
+  <div class="boardSubtitle">Create your own 4Chan shitcoin</div>
 </div>
 
 <div id="main">
@@ -172,8 +172,24 @@
 </div>
 
 <div id="footer">
-  All tokens are real and deployed on Solana mainnet via pump.fun
+  All tokens are deployed on Solana mainnet via pump.fun<br>
+  <div class="site-token-bar">
+    <span style="color:#800000; font-weight:bold;">$PUMPCHAN:</span>
+    <code id="siteTokenAddr" style="user-select:all; font-size:10px;">2wJwYPgSJnorvNqnQft4vFmR1YaWL6rmLbwUWSa9pump</code>
+    <button onclick="copySiteToken()" style="font-size:10px; padding:1px 5px; cursor:pointer; font-family:sans-serif; margin-left:4px;">Copy</button>
+    <span id="siteTokenCopied" style="color:green; font-size:10px; margin-left:4px;"></span>
+    <a href="#" target="_blank" rel="noopener" style="display:none; margin-left:10px; font-size:11px;" id="siteTwitterBtn">&#119987; Twitter &#8599;</a>
+  </div>
 </div>
+<script>
+function copySiteToken() {
+  navigator.clipboard.writeText('2wJwYPgSJnorvNqnQft4vFmR1YaWL6rmLbwUWSa9pump').then(function() {
+    var el = document.getElementById('siteTokenCopied');
+    el.textContent = '✓ Copied!';
+    setTimeout(function() { el.textContent = ''; }, 2000);
+  });
+}
+</script>
 
 <script src="/js/ws-client.js"></script>
 <script src="/js/thread.js"></script>

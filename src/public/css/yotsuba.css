@@ -462,6 +462,10 @@ div.pages a:hover { color: #DD0000; }
   margin-top: 4px;
 }
 #footer a { color: #880000; }
+.site-token-bar {
+  margin-top: 6px;
+  font-size: 11px;
+}
 
 /* ===== SPINNER ===== */
 .spinner {
@@ -552,6 +556,25 @@ br.clear { clear: both; }
   display: block;
 }
 .popular-card:hover .popular-card-title { color: #DD0000; text-decoration: underline; }
+
+/* ===== THREADS 2-COLUMN GRID ===== */
+.threads-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+}
+.threads-grid .thread {
+  border-bottom: 1px solid #D9BFB7;
+  border-right: 1px solid #D9BFB7;
+  padding-right: 8px;
+}
+.threads-grid .thread:nth-child(even) {
+  border-right: none;
+}
+@media (max-width: 700px) {
+  .threads-grid { grid-template-columns: 1fr; }
+  .threads-grid .thread { border-right: none; }
+}
 
 /* ===== BOARDS LISTING BOX ===== */
 .boards-box {

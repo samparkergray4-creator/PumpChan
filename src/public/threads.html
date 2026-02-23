@@ -11,6 +11,20 @@
 
 <!-- ===== TOP BOARDLIST ===== -->
 <div class="boardlist">
+  [<a href="/threads">All</a>]
+  &nbsp;[<a href="/threads?board=sol">/sol/</a>]
+  &nbsp;[<a href="/threads?board=meme">/meme/</a>]
+  &nbsp;[<a href="/threads?board=degen">/degen/</a>]
+  &nbsp;[<a href="/threads?board=moon">/moon/</a>]
+  &nbsp;[<a href="/threads?board=ai">/ai/</a>]
+  &nbsp;[<a href="/threads?board=pol">/pol/</a>]
+  &nbsp;[<a href="/threads?board=tek">/tek/</a>]
+  &nbsp;[<a href="/threads?board=animal">/animal/</a>]
+  &nbsp;[<a href="/threads?board=trump">/trump/</a>]
+  &nbsp;[<a href="/threads?board=elon">/elon/</a>]
+  &nbsp;[<a href="/threads?board=random">/random/</a>]
+</div>
+<div class="boardlist">
   [<a href="/">launch</a>]
   [<a href="/threads">threads</a>]
 </div>
@@ -18,7 +32,7 @@
 <!-- ===== BOARD HEADER ===== -->
 <div id="header">
   <div class="boardTitle" id="boardTitle">PumpChan</div>
-  <div class="boardSubtitle" id="boardSubtitle"></div>
+  <div class="boardSubtitle" id="boardSubtitle">Create your own 4Chan shitcoin</div>
 </div>
 
 <div id="main">
@@ -27,21 +41,7 @@
   <div style="padding: 4px 8px; font-size: 11px;">
     [<a href="/">Post New Token</a>]
     &nbsp;[<a href="/threads">Refresh</a>]
-    &nbsp;&mdash;
-    <a href="/threads" style="font-size:11px;">All</a>
-    &nbsp;<a href="/threads?board=sol" style="font-size:11px;">/sol/</a>
-    &nbsp;<a href="/threads?board=meme" style="font-size:11px;">/meme/</a>
-    &nbsp;<a href="/threads?board=degen" style="font-size:11px;">/degen/</a>
-    &nbsp;<a href="/threads?board=moon" style="font-size:11px;">/moon/</a>
-    &nbsp;<a href="/threads?board=ai" style="font-size:11px;">/ai/</a>
-    &nbsp;<a href="/threads?board=pol" style="font-size:11px;">/pol/</a>
-    &nbsp;<a href="/threads?board=tek" style="font-size:11px;">/tek/</a>
-    &nbsp;<a href="/threads?board=animal" style="font-size:11px;">/animal/</a>
-    &nbsp;<a href="/threads?board=trump" style="font-size:11px;">/trump/</a>
-    &nbsp;<a href="/threads?board=elon" style="font-size:11px;">/elon/</a>
-    &nbsp;<a href="/threads?board=random" style="font-size:11px;">/random/</a>
-    &nbsp;&mdash;
-    &nbsp;&nbsp;
+    &nbsp;&mdash;&nbsp;&nbsp;
     <input type="text" id="searchInput" placeholder="Search tokens..."
            style="font-size:11px; border:1px solid #AAAAAA; padding:1px 3px; width:160px; font-family:sans-serif;">
     <button onclick="searchThreads()"
@@ -79,8 +79,24 @@
 </div>
 
 <div id="footer">
-  All tokens are real and deployed on Solana mainnet via pump.fun
+  All tokens are deployed on Solana mainnet via pump.fun<br>
+  <div class="site-token-bar">
+    <span style="color:#800000; font-weight:bold;">$PUMPCHAN:</span>
+    <code id="siteTokenAddr" style="user-select:all; font-size:10px;">2wJwYPgSJnorvNqnQft4vFmR1YaWL6rmLbwUWSa9pump</code>
+    <button onclick="copySiteToken()" style="font-size:10px; padding:1px 5px; cursor:pointer; font-family:sans-serif; margin-left:4px;">Copy</button>
+    <span id="siteTokenCopied" style="color:green; font-size:10px; margin-left:4px;"></span>
+    <a href="#" target="_blank" rel="noopener" style="display:none; margin-left:10px; font-size:11px;" id="siteTwitterBtn">&#119987; Twitter &#8599;</a>
+  </div>
 </div>
+<script>
+function copySiteToken() {
+  navigator.clipboard.writeText('2wJwYPgSJnorvNqnQft4vFmR1YaWL6rmLbwUWSa9pump').then(function() {
+    var el = document.getElementById('siteTokenCopied');
+    el.textContent = '✓ Copied!';
+    setTimeout(function() { el.textContent = ''; }, 2000);
+  });
+}
+</script>
 
 <script src="/js/ws-client.js"></script>
 <script src="/js/threads.js"></script>
