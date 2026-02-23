@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>/biz/ - Business &amp; Finance</title>
+  <link rel="icon" type="image/png" href="/favicon.png">
+  <link rel="stylesheet" href="/css/yotsuba.css">
+</head>
+<body>
+
+<!-- ===== TOP BOARDLIST ===== -->
+<div class="boardlist">
+  [<a href="/">launch</a>]
+  [<a href="/threads">threads</a>]
+  [<a href="/catalog">catalog</a>]
+</div>
+
+<!-- ===== BOARD HEADER ===== -->
+<div id="header">
+  <div class="boardTitle" id="boardTitle">/biz/ - Business &amp; Finance</div>
+  <div class="boardSubtitle" id="boardSubtitle">Not your keys, not your coins</div>
+</div>
+
+<div id="main">
+
+  <!-- Nav + search bar -->
+  <div style="padding: 4px 8px; font-size: 11px;">
+    [<a href="/">Post New Token</a>]
+    &nbsp;[<a href="/threads">Refresh</a>]
+    &nbsp;&mdash;
+    <a href="/threads" style="font-size:11px;">All</a>
+    &nbsp;<a href="/threads?board=sol" style="font-size:11px;">/sol/</a>
+    &nbsp;<a href="/threads?board=meme" style="font-size:11px;">/meme/</a>
+    &nbsp;<a href="/threads?board=degen" style="font-size:11px;">/degen/</a>
+    &nbsp;<a href="/threads?board=moon" style="font-size:11px;">/moon/</a>
+    &nbsp;<a href="/threads?board=ai" style="font-size:11px;">/ai/</a>
+    &nbsp;<a href="/threads?board=pol" style="font-size:11px;">/pol/</a>
+    &nbsp;<a href="/threads?board=tek" style="font-size:11px;">/tek/</a>
+    &nbsp;<a href="/threads?board=animal" style="font-size:11px;">/animal/</a>
+    &nbsp;<a href="/threads?board=trump" style="font-size:11px;">/trump/</a>
+    &nbsp;<a href="/threads?board=elon" style="font-size:11px;">/elon/</a>
+    &nbsp;<a href="/threads?board=random" style="font-size:11px;">/random/</a>
+    &nbsp;&mdash;
+    &nbsp;&nbsp;
+    <input type="text" id="searchInput" placeholder="Search tokens..."
+           style="font-size:11px; border:1px solid #AAAAAA; padding:1px 3px; width:160px; font-family:sans-serif;">
+    <button onclick="searchThreads()"
+            style="font-size:11px; padding:1px 5px; cursor:pointer; font-family:sans-serif;">Go</button>
+    &nbsp;&nbsp;
+    Sort by:
+    <a href="#" onclick="sortBy('date'); return false;" id="sort-date" style="font-size:11px; margin-right:4px; color:#800000; font-weight:bold;">Latest&#9660;</a>
+    <a href="#" onclick="sortBy('mc'); return false;" id="sort-mc" style="font-size:11px; margin-right:4px;">Market Cap</a>
+    <a href="#" onclick="sortBy('replies'); return false;" id="sort-replies" style="font-size:11px;">Replies</a>
+  </div>
+
+  <hr>
+
+  <!-- Thread listing (each launched token = one thread block) -->
+  <div id="threadsList">
+    <div style="padding:20px; text-align:center; color:#800000;">
+      <span class="quote">&gt; Loading threads...</span>
+    </div>
+  </div>
+
+  <hr>
+
+  <!-- Footer nav -->
+  <div class="pages">
+    [<a href="/">Post New Token</a>]
+    &nbsp;[<a href="/threads">Return</a>]
+  </div>
+
+</div>
+
+<!-- ===== BOTTOM BOARDLIST ===== -->
+<div class="boardlist bottom">
+  [<a href="/">launch</a>]
+  [<a href="/threads">threads</a>]
+  [<a href="/catalog">catalog</a>]
+</div>
+
+<div id="footer">
+  All tokens are real and deployed on Solana mainnet via pump.fun
+</div>
+
+<script src="/js/ws-client.js"></script>
+<script src="/js/threads.js"></script>
+</body>
+</html>

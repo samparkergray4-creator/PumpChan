@@ -1,0 +1,24 @@
+{
+  "name": "4chan-launchpad",
+  "version": "1.0.0",
+  "description": "4chan-styled memecoin launchpad for Solana",
+  "type": "module",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js"
+  },
+  "keywords": ["solana", "pump.fun", "launchpad", "4chan", "forum"],
+  "license": "ISC",
+  "dependencies": {
+    "@solana/spl-token": "^0.4.14",
+    "@solana/web3.js": "^1.87.6",
+    "bs58": "^5.0.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "express-rate-limit": "^8.2.1",
+    "firebase-admin": "^12.0.0",
+    "ws": "^8.16.0"
+  }
+}

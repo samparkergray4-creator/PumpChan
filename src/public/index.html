@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PumpChan - /biz/ - Business &amp; Finance</title>
+  <link rel="icon" type="image/png" href="/favicon.png">
+  <link rel="stylesheet" href="/css/yotsuba.css">
+  <script src="https://unpkg.com/@solana/web3.js@latest/lib/index.iife.min.js"></script>
+</head>
+<body>
+
+<!-- ===== TOP BOARDLIST ===== -->
+<div class="boardlist">
+  [<a href="/">launch</a>]
+  [<a href="/threads">threads</a>]
+  [<a href="/catalog">catalog</a>]
+</div>
+
+<!-- ===== SITE HEADER / LOGO ===== -->
+<div id="header">
+  <div class="siteLogo">PumpChan</div>
+  <div class="boardSubtitle">/biz/ - Business &amp; Finance</div>
+</div>
+
+<div id="main">
+  <div class="page-wrap">
+
+    <!-- ===== WHAT IS PUMPCHAN BOX ===== -->
+    <div class="info-box" id="infoBox">
+      <div class="info-box-header">
+        What is PumpChan?
+        <span class="info-box-x" onclick="document.getElementById('infoBox').style.display='none'">X</span>
+      </div>
+      <div class="info-box-body">
+        PumpChan is a 4chan&#8209;style memecoin launchpad built on Solana. Launch your token directly
+        to <a href="https://pump.fun" target="_blank" rel="noopener">pump.fun</a> and it instantly
+        gets its own thread where the community can shill, FUD, and reply in real time.
+        <br><br>
+        Connect your Phantom wallet, fill out the form below, and post your thread. Each launch
+        costs <strong>0.05 SOL</strong> platform fee. Not your keys, not your coins.
+      </div>
+    </div>
+
+    <!-- ===== LAUNCH FORM BOX ===== -->
+    <div class="launch-box">
+      <div class="launch-box-header">
+        Post a New Thread
+        <span style="float:right; font-weight:normal; font-size:11px;">
+          [<a href="/threads" style="color:#800000;">Return</a>]
+          &nbsp;[<a href="/catalog" style="color:#800000;">Catalog</a>]
+        </span>
+      </div>
+      <div class="launch-box-body">
+
+        <div id="statusMsg"></div>
+
+        <form name="post" class="post-form" id="launchForm">
+          <table>
+            <tbody>
+              <tr>
+                <th>Token Name</th>
+                <td>
+                  <input type="text" id="name" name="name" size="28" maxlength="40"
+                         placeholder="e.g. Buttcoin" required autocomplete="off">
+                </td>
+              </tr>
+              <tr>
+                <th>Symbol</th>
+                <td>
+                  <input type="text" id="symbol" name="symbol" size="12" maxlength="10"
+                         placeholder="e.g. BUTT" required autocomplete="off">
+                </td>
+              </tr>
+              <tr>
+                <th>Comment</th>
+                <td>
+                  <textarea id="description" name="description" rows="6" cols="48"
+                            placeholder="Describe your token. Why should anyone buy it?&#10;&gt; greentext your thesis like this"></textarea>
+                </td>
+              </tr>
+              <tr>
+                <th>Socials</th>
+                <td>
+                  <input type="text" id="twitter" name="twitter" size="28" maxlength="100"
+                         placeholder="Twitter/X @handle (optional)" autocomplete="off">
+                </td>
+              </tr>
+              <tr id="upload">
+                <th>File</th>
+                <td>
+                  <input type="file" id="image" name="image" accept="image/*" required>
+                  <div id="imagePreview" style="display:none; margin-top:6px;">
+                    <img id="previewImg" src="" alt="Preview">
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <th>Board</th>
+                <td>
+                  <select id="board" name="board" style="font-size:13px; font-family:arial,helvetica,sans-serif; border:1px solid #AAAAAA; padding:1px 3px;">
+                    <option value="sol">/sol/ - Solana</option>
+                    <option value="meme">/meme/ - Memes &amp; Culture</option>
+                    <option value="degen">/degen/ - Degen Trading</option>
+                    <option value="moon">/moon/ - Moon Shots</option>
+                    <option value="ai">/ai/ - AI &amp; Bots</option>
+                    <option value="pol">/pol/ - Politics</option>
+                    <option value="tek">/tek/ - Technology</option>
+                    <option value="animal">/animal/ - Animals &amp; Nature</option>
+                    <option value="trump">/trump/ - Trump</option>
+                    <option value="elon">/elon/ - Elon &amp; Space</option>
+                    <option value="random" selected>/random/ - Random</option>
+                  </select>
+                </td>
+              </tr>
+              <tr>
+                <th>Dev Buy</th>
+                <td>
+                  <input type="number" id="devBuy" name="devBuy" size="8"
+                         min="0" max="50" step="0.01" value="0">
+                  <span style="font-size:12px; color:#888; margin-left:6px;">SOL &mdash; buy at launch (0 = skip)</span>
+                </td>
+              </tr>
+              <tr>
+                <th>Dev Name</th>
+                <td>
+                  <input type="text" id="creatorUsername" name="creatorUsername" size="28" maxlength="20"
+                         placeholder="Anonymous" autocomplete="off">
+                </td>
+              </tr>
+              <tr>
+                <td colspan="2" style="padding-top:8px; border-top:1px solid #D9BFB7;">
+                  <input type="submit" id="launchBtn" value="Launch Token (0.05 SOL)">
+                  <span style="font-size:11px; color:#888; margin-left:10px;">Platform fee: 0.05 SOL</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </form>
+
+      </div>
+    </div>
+
+    <!-- ===== POPULAR THREADS ===== -->
+    <div class="popular-box" style="margin-top:10px;">
+      <div class="launch-box-header">
+        Popular Threads
+        <span style="float:right; font-weight:normal; font-size:11px;">
+          [<a href="/threads" style="color:#800000;">View All</a>]
+        </span>
+      </div>
+      <div class="popular-box-body">
+        <div class="popular-grid" id="popularGrid">
+          <span style="color:#888; font-size:11px;">Loading...</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== BOARDS LISTING ===== -->
+    <div class="boards-box" style="margin-top:10px;">
+      <div class="launch-box-header">Boards</div>
+      <div class="boards-box-body">
+        <div class="boards-grid">
+          <a href="/threads?board=sol">/sol/ <span id="bc-sol">(0)</span></a>
+          <a href="/threads?board=meme">/meme/ <span id="bc-meme">(0)</span></a>
+          <a href="/threads?board=degen">/degen/ <span id="bc-degen">(0)</span></a>
+          <a href="/threads?board=moon">/moon/ <span id="bc-moon">(0)</span></a>
+          <a href="/threads?board=ai">/ai/ <span id="bc-ai">(0)</span></a>
+          <a href="/threads?board=pol">/pol/ <span id="bc-pol">(0)</span></a>
+          <a href="/threads?board=tek">/tek/ <span id="bc-tek">(0)</span></a>
+          <a href="/threads?board=animal">/animal/ <span id="bc-animal">(0)</span></a>
+          <a href="/threads?board=trump">/trump/ <span id="bc-trump">(0)</span></a>
+          <a href="/threads?board=elon">/elon/ <span id="bc-elon">(0)</span></a>
+          <a href="/threads?board=random">/random/ <span id="bc-random">(0)</span></a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ===== BOTTOM BOARDLIST ===== -->
+<div class="boardlist bottom">
+  [<a href="/">launch</a>]
+  [<a href="/threads">threads</a>]
+  [<a href="/catalog">catalog</a>]
+</div>
+
+<div id="footer">
+  All tokens are real and deployed on Solana mainnet via pump.fun<br>
+  <span style="font-size:10px; color:#BB8866;">Not your keys, not your coins</span>
+</div>
+
+<script src="/js/ws-client.js"></script>
+<script src="/js/wallet.js"></script>
+<script src="/js/launch.js"></script>
+</body>
+</html>

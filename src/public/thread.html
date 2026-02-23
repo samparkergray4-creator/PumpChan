@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Thread - /biz/ - Business &amp; Finance</title>
+  <link rel="icon" type="image/png" href="/favicon.png">
+  <link rel="stylesheet" href="/css/yotsuba.css">
+  <script src="https://unpkg.com/lightweight-charts@4.2.2/dist/lightweight-charts.standalone.production.js"></script>
+</head>
+<body>
+
+<!-- ===== TOP BOARDLIST ===== -->
+<div class="boardlist">
+  [<a href="/">launch</a>]
+  [<a href="/threads">threads</a>]
+  &nbsp;&nbsp;
+  <span id="breadcrumbText" style="color:#880000; font-weight:bold;"></span>
+</div>
+
+<!-- ===== BOARD HEADER ===== -->
+<div id="header">
+  <div class="boardTitle">/biz/ - Business &amp; Finance</div>
+  <div class="boardSubtitle">Not your keys, not your coins</div>
+</div>
+
+<div id="main">
+
+  <!-- Return / navigation bar -->
+  <div style="padding: 4px 8px; font-size: 11px;">
+    [<a href="/threads">Return</a>]
+    &nbsp;[<a href="#bottom">Go to bottom</a>]
+    &nbsp;[<a href="#replyForm">Post a Reply</a>]
+  </div>
+
+  <!-- ===== THREAD CONTAINER ===== -->
+  <div class="thread" id="thread-container">
+
+    <!-- ===== OP POST ===== -->
+    <div class="post op" id="op-post">
+
+      <!-- OP post info line -->
+      <div class="postInfo" id="opPostInfo">
+        <span class="subject" id="opSubject">Loading...</span>
+        <span class="name" id="opCreator">Anonymous</span>
+        <span class="dateTime" id="opDateTime"></span>
+        <span class="postNum">
+          <a title="Link to this post">No.</a><a id="opPostNo" style="cursor:help;"></a>
+        </span>
+      </div>
+
+      <!-- OP coin image (thumbnail) -->
+      <div class="file" id="opFile" style="display:none;">
+        <p class="fileinfo" id="opFileInfo"></p>
+        <a class="fileThumb" id="opFileLink" href="#" target="_blank">
+          <img id="opImage" class="post-image" src="" alt=""
+               style="max-width:200px; max-height:200px;"
+               onerror="document.getElementById('opFile').style.display='none'">
+        </a>
+      </div>
+
+      <!-- OP post body (description) -->
+      <blockquote class="postMessage" id="opBody" style="margin-left:0;">
+        Loading...
+      </blockquote>
+
+      <!-- Live stats -->
+      <div class="coin-stats">
+        <b style="color:#800000; font-size:10px; text-transform:uppercase;">Live Stats</b>
+        <table>
+          <tr>
+            <td class="coin-stat-label">Market Cap</td>
+            <td class="coin-stat-value" id="statMC">&mdash;</td>
+            <td style="padding:0 8px;">&nbsp;</td>
+            <td class="coin-stat-label">24h Volume</td>
+            <td class="coin-stat-value" id="statVolume">&mdash;</td>
+          </tr>
+          <tr>
+            <td class="coin-stat-label">Holders</td>
+            <td class="coin-stat-value" id="statHolders">&mdash;</td>
+            <td style="padding:0 8px;">&nbsp;</td>
+            <td class="coin-stat-label">Replies</td>
+            <td class="coin-stat-value" id="statComments">&mdash;</td>
+          </tr>
+        </table>
+      </div>
+
+      <!-- Price chart -->
+      <div class="chart-section">
+        <div class="chart-title">Price Chart (Market Cap USD) &mdash; Real-time</div>
+        <div class="tf-bar" id="tfBar">
+          <button class="tf-btn tf-btn-active" data-tf="line" onclick="switchChartMode('line')">Line</button>
+          <button class="tf-btn" data-tf="1m" onclick="switchChartMode('1m')">1m</button>
+          <button class="tf-btn" data-tf="5m" onclick="switchChartMode('5m')">5m</button>
+          <button class="tf-btn" data-tf="15m" onclick="switchChartMode('15m')">15m</button>
+          <button class="tf-btn" data-tf="1h" onclick="switchChartMode('1h')">1h</button>
+        </div>
+        <div id="priceChart" style="height:200px; background:#FFF; border:1px solid #D9BFB7;"></div>
+        <div id="chartPlaceholder" style="text-align:center; color:#888; font-size:11px; padding:4px;">
+          <span class="quote">&gt; Waiting for trade data...</span>
+        </div>
+      </div>
+
+      <!-- Contract info -->
+      <div class="contract-box">
+        <b>Contract Address:</b><br>
+        <code id="coinMint" style="user-select:all;"></code>
+        <button onclick="copyMint()"
+                style="font-size:10px; padding:1px 5px; cursor:pointer; font-family:sans-serif; margin-left:6px;">Copy</button>
+        <span id="copyStatus" style="color:green; font-size:10px; margin-left:4px;"></span>
+        <br>
+        <a id="pumpLink" href="#" target="_blank" style="font-size:11px;">View on pump.fun &#8599;</a>
+        &nbsp;&nbsp;
+        <a id="twitterLink" href="#" target="_blank" style="font-size:11px; display:none;">&#119987; Twitter &#8599;</a>
+      </div>
+
+    </div>
+    <!-- end OP post -->
+
+    <!-- ===== REPLIES (comments) ===== -->
+    <div id="repliesList">
+      <!-- Rendered by thread.js -->
+    </div>
+
+    <br class="clear">
+  </div>
+  <!-- end .thread -->
+
+  <hr>
+
+  <!-- ===== REPLY FORM ===== -->
+  <a name="bottom" id="bottom"></a>
+
+  <div class="posting-mode-bar" id="replyForm">
+    <strong>Posting mode:</strong> Reply
+    &nbsp;&nbsp;[<a href="/threads">Return</a>]
+    &nbsp;&nbsp;[<a href="#">Go to top</a>]
+  </div>
+
+  <div class="postarea">
+    <div id="replyStatus"></div>
+    <form name="post" class="post-form" id="commentForm">
+      <table>
+        <tbody>
+          <tr>
+            <th>Name</th>
+            <td>
+              <input type="text" id="username" name="username" size="28" maxlength="50"
+                     placeholder="Anonymous" autocomplete="off">
+            </td>
+          </tr>
+          <tr>
+            <th>Comment</th>
+            <td>
+              <textarea id="comment" name="comment" rows="5" cols="48"
+                        placeholder="Write your reply..."></textarea>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="2" style="padding-top:4px;">
+              <input type="submit" id="postBtn" value="Post">
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </form>
+  </div>
+
+
+</div>
+
+<!-- ===== BOTTOM BOARDLIST ===== -->
+<div class="boardlist bottom">
+  [<a href="/">launch</a>]
+  [<a href="/threads">threads</a>]
+</div>
+
+<div id="footer">
+  All tokens are real and deployed on Solana mainnet via pump.fun
+</div>
+
+<script src="/js/ws-client.js"></script>
+<script src="/js/thread.js"></script>
+</body>
+</html>
