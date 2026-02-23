@@ -8,7 +8,7 @@ var areaSeries = null;
 var candleSeries = null;
 var chartPoints = [];
 var candlePoints = [];
-var currentMode = 'line';
+var currentMode = '1m';
 
 var chartPriceFormat = {
   type: 'custom',
@@ -131,8 +131,8 @@ window.switchChartMode = function switchChartMode(mode) {
     else btn.classList.remove('tf-btn-active');
   });
   if (mode === 'line') {
-    if (!priceChart) initChart();
-    showAreaSeries();
+    if (chartPoints.length === 0) loadChart().then(showAreaSeries);
+    else { if (!priceChart) initChart(); showAreaSeries(); }
     var ph = document.getElementById('chartPlaceholder');
     if (ph) ph.style.display = chartPoints.length > 0 ? 'none' : '';
   } else {
@@ -214,8 +214,8 @@ async function loadThread() {
       opFile.style.display = '';
     }
 
-    // Post body (description)
-    document.getElementById('opBody').textContent = coin.description || '(no description provided)';
+    // Post body (description) — render as greentext
+    document.getElementById('opBody').innerHTML = formatAsGreentext(coin.description);
 
     // Stats
     document.getElementById('statMC').textContent = coin.marketCap
@@ -240,8 +240,7 @@ async function loadThread() {
 
     // Load comments and chart
     await loadComments();
-    await loadChart();
-    if (chartPoints.length === 0 && coin.marketCap) addChartPoint(coin.marketCap);
+    switchChartMode('1m');
 
   } catch (err) {
     console.error('Error loading thread:', err);
@@ -403,6 +402,15 @@ function formatNum(n) {
   if (n >= 1e6) return (n / 1e6).toFixed(2) + 'M';
   if (n >= 1e3) return (n / 1e3).toFixed(2) + 'K';
   return n.toFixed(2);
+}
+
+function formatAsGreentext(text) {
+  if (!text) return '<span class="quote">&gt; (no description provided)</span>';
+  return text.split('\n').map(function(line) {
+    var escaped = escapeHtml(line);
+    var formatted = line.startsWith('>') ? escaped : '&gt;' + escaped;
+    return '<span class="quote">' + formatted + '</span>';
+  }).join('<br>');
 }
 
 function escapeHtml(s) {

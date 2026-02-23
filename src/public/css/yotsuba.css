@@ -501,6 +501,9 @@ br.clear { clear: both; }
   color: inherit;
   display: block;
 }
+.popular-card * {
+  text-decoration: none;
+}
 .popular-card-board {
   font-size: 11px;
   color: #800000;

@@ -120,105 +120,37 @@ function renderThreads() {
     return;
   }
 
-  container.innerHTML = list.map((thread, idx) => {
-    // Image URL
+  container.innerHTML = '<div class="catalog-grid">' + list.map(thread => {
     let imageUrl = thread.image || '';
     if (imageUrl.startsWith('ipfs://')) imageUrl = `/api/image/${imageUrl.replace('ipfs://', '')}`;
     const hasImage = imageUrl && (imageUrl.startsWith('http') || imageUrl.startsWith('/api/') || imageUrl.startsWith('data:'));
 
-    // Date in 4chan format
-    const date = thread.createdAt?._seconds ? new Date(thread.createdAt._seconds * 1000) : new Date();
-    const dateStr = formatChanDate(date);
-
-    // Shortened mint address as "post number"
-    const shortMint = thread.mint.slice(0, 6) + '...' + thread.mint.slice(-4);
-
-    // Description excerpt
-    const desc = thread.description || '';
-    const excerpt = desc.length > 250 ? desc.slice(0, 250) + '...' : desc;
-
-    // Reply count
     const replies = thread.commentCount || 0;
-
-    // Pinned badge
-    const pinnedHtml = thread.pinned
-      ? '<span style="color:#c00; font-size:10px; margin-right:4px;">[STICKY]</span>'
-      : '';
-
-    // Board tag
+    const name = escapeHtml(thread.name || '');
+    const symbol = escapeHtml(thread.symbol || '');
+    const pinnedHtml = thread.pinned ? '<div class="catalog-sticky">[STICKY]</div>' : '';
     const boardInfo = thread.board && BOARDS[thread.board] ? BOARDS[thread.board] : null;
     const boardHtml = boardInfo
-      ? `&nbsp;<a href="/threads?board=${thread.board}" class="board-tag">${boardInfo.name}</a>`
+      ? ` &nbsp;<a href="/threads?board=${thread.board}" class="board-tag">${boardInfo.name}</a>`
       : '';
-
-    // Twitter link
-    const twitterHtml = thread.twitter
-      ? `&nbsp;<a href="${escapeHtml(normalizeTwitterUrl(thread.twitter))}" target="_blank"
-            style="font-size:10px; color:#0000EE;" rel="noopener">[Twitter]</a>`
-      : '';
-
-    // Left margin when image present
-    const bodyMargin = hasImage ? 'margin-left:145px;' : '';
 
     return `
-      <div class="thread" id="thread_${idx}">
-        <div class="post op">
-
-          <!-- Post info line -->
-          <div class="postInfo">
-            ${pinnedHtml}
-            <span class="subject">
-              <a href="/thread/${thread.mint}" style="color:#DD0000; text-decoration:none;">
-                ${escapeHtml(thread.name)} (${escapeHtml(thread.symbol)})
-              </a>
-            </span>
-            <span class="name">${escapeHtml(thread.creatorUsername || 'Anonymous')}</span>
-            <span class="dateTime">${dateStr}</span>
-            <span class="postNum">
-              <a title="${thread.mint}">No.</a><a title="${thread.mint}">${shortMint}</a>
-            </span>
-            <a class="replylink" href="/thread/${thread.mint}">[Reply]</a>
-            ${boardHtml}
-            ${twitterHtml}
-          </div>
-
-          ${hasImage ? `
-          <div class="file">
-            <p class="fileinfo">
-              <a href="/thread/${thread.mint}" style="color:#666; text-decoration:none;">${escapeHtml(thread.name)}.png</a>
-              <span class="unimportant" id="mc-${thread.mint}"></span>
-            </p>
-            <a class="fileThumb" href="/thread/${thread.mint}">
-              <img class="post-image" src="${escapeHtml(imageUrl)}" alt="${escapeHtml(thread.name)}"
-                   style="max-width:125px; max-height:125px;"
-                   onerror="this.closest('.file').style.display='none'">
-            </a>
-          </div>` : ''}
-
-          <!-- Post body (description excerpt) -->
-          <blockquote class="postMessage" style="${bodyMargin}">
-            ${excerpt
-              ? escapeHtml(excerpt)
-              : '<span class="quote">&gt; no description provided</span>'
-            }
-          </blockquote>
-
-          <!-- Omitted replies text -->
-          <span class="omitted">
-            <span id="vol-${thread.mint}"></span>
-            ${replies > 0
-              ? `${replies} ${replies === 1 ? 'reply' : 'replies'} omitted.
-                 <a href="/thread/${thread.mint}">Click here to view.</a>`
-              : `<a href="/thread/${thread.mint}">Be the first to reply.</a>`
-            }
-          </span>
-
+      <a class="catalog-card" href="/thread/${thread.mint}" title="${name} (${symbol})">
+        ${pinnedHtml}
+        <div class="catalog-img-wrap">
+          ${hasImage
+            ? `<img src="${escapeHtml(imageUrl)}" alt="${name}"
+                    onerror="this.closest('.catalog-card').querySelector('.catalog-img-wrap').innerHTML='<div class=\\'catalog-no-img\\'>${symbol}</div>'">`
+            : `<div class="catalog-no-img">${symbol}</div>`
+          }
         </div>
-        <br class="clear">
-      </div>
-      <hr>
-    `;
-  }).join('');
+        <div class="catalog-info">
+          <div class="catalog-title">${name} <span class="catalog-symbol">(${symbol})</span></div>
+          <div class="catalog-replies">${replies} ${replies === 1 ? 'reply' : 'replies'}${boardHtml}</div>
+          <div class="catalog-mc" id="mc-${thread.mint}"></div>
+        </div>
+      </a>`;
+  }).join('') + '</div>';
 
   // Fetch live stats for visible coins
   list.forEach(thread => updateCoinStats(thread.mint));
@@ -229,15 +161,12 @@ async function updateCoinStats(mint) {
     const res = await fetch(`/api/coin/${mint}`);
     if (!res.ok) return;
     const coin = await res.json();
-
     const mcEl = document.getElementById(`mc-${mint}`);
-    if (mcEl && coin.marketCap) {
-      mcEl.textContent = ` (MC: $${formatNum(coin.marketCap)})`;
-    }
-
-    const volEl = document.getElementById(`vol-${mint}`);
-    if (volEl && coin.volume24h) {
-      volEl.textContent = `Vol: $${formatNum(coin.volume24h)} | `;
+    if (mcEl) {
+      const parts = [];
+      if (coin.marketCap) parts.push(`MC: $${formatNum(coin.marketCap)}`);
+      if (coin.volume24h) parts.push(`Vol: $${formatNum(coin.volume24h)}`);
+      if (parts.length) mcEl.textContent = parts.join(' | ');
     }
   } catch (e) { /* ignore */ }
 }
@@ -314,10 +243,12 @@ window.searchThreads = function () {
 if (typeof WsClient !== 'undefined') {
   WsClient.init(function (data) {
     const mcEl = document.getElementById(`mc-${data.mint}`);
-    if (mcEl && data.marketCap) mcEl.textContent = ` (MC: $${formatNum(data.marketCap)})`;
-
-    const volEl = document.getElementById(`vol-${data.mint}`);
-    if (volEl && data.volume24h) volEl.textContent = `Vol: $${formatNum(data.volume24h)} | `;
+    if (mcEl) {
+      const parts = [];
+      if (data.marketCap) parts.push(`MC: $${formatNum(data.marketCap)}`);
+      if (data.volume24h) parts.push(`Vol: $${formatNum(data.volume24h)}`);
+      if (parts.length) mcEl.textContent = parts.join(' | ');
+    }
   });
 }
 

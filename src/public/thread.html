@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Thread - /biz/ - Business &amp; Finance</title>
+  <title>PumpChan</title>
   <link rel="icon" type="image/png" href="/favicon.png">
   <link rel="stylesheet" href="/css/yotsuba.css">
   <script src="https://unpkg.com/lightweight-charts@4.2.2/dist/lightweight-charts.standalone.production.js"></script>
@@ -20,8 +20,8 @@
 
 <!-- ===== BOARD HEADER ===== -->
 <div id="header">
-  <div class="boardTitle">/biz/ - Business &amp; Finance</div>
-  <div class="boardSubtitle">Not your keys, not your coins</div>
+  <div class="boardTitle">PumpChan</div>
+  <div class="boardSubtitle"></div>
 </div>
 
 <div id="main">
@@ -89,8 +89,8 @@
       <div class="chart-section">
         <div class="chart-title">Price Chart (Market Cap USD) &mdash; Real-time</div>
         <div class="tf-bar" id="tfBar">
-          <button class="tf-btn tf-btn-active" data-tf="line" onclick="switchChartMode('line')">Line</button>
-          <button class="tf-btn" data-tf="1m" onclick="switchChartMode('1m')">1m</button>
+          <button class="tf-btn" data-tf="line" onclick="switchChartMode('line')">Line</button>
+          <button class="tf-btn tf-btn-active" data-tf="1m" onclick="switchChartMode('1m')">1m</button>
           <button class="tf-btn" data-tf="5m" onclick="switchChartMode('5m')">5m</button>
           <button class="tf-btn" data-tf="15m" onclick="switchChartMode('15m')">15m</button>
           <button class="tf-btn" data-tf="1h" onclick="switchChartMode('1h')">1h</button>
@@ -131,11 +131,7 @@
   <!-- ===== REPLY FORM ===== -->
   <a name="bottom" id="bottom"></a>
 
-  <div class="posting-mode-bar" id="replyForm">
-    <strong>Posting mode:</strong> Reply
-    &nbsp;&nbsp;[<a href="/threads">Return</a>]
-    &nbsp;&nbsp;[<a href="#">Go to top</a>]
-  </div>
+  <div id="replyForm"></div>
 
   <div class="postarea">
     <div id="replyStatus"></div>

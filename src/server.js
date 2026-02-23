@@ -1073,11 +1073,6 @@ app.get('/threads', (req, res) => {
   res.sendFile(join(__dirname, 'public', 'threads.html'));
 });
 
-// Catalog page
-app.get('/catalog', (req, res) => {
-  res.sendFile(join(__dirname, 'public', 'catalog.html'));
-});
-
 // Thread page
 app.get('/thread/:mint', (req, res) => {
   res.sendFile(join(__dirname, 'public', 'thread.html'));
