@@ -215,7 +215,7 @@ app.post('/api/launch/prepare', launchLimiter, async (req, res) => {
         description: description || '',
         twitter: twitter || '',
         telegram: '',
-        website: `https://pumpchan.bid/thread/${tokenMint}`,
+        website: '', // TODO: re-enable after testing: `https://pumpchan.bid/thread/${tokenMint}`
         showName: 'true'
       };
 
