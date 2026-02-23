@@ -114,17 +114,26 @@ function sleep(ms) {
     const res = await fetch('/api/threads');
     const data = await res.json();
 
-    // Board counts
+    // Board counts + sort by most recent launch
     if (data.success && data.threads) {
       const counts = {};
+      const latest = {};
       data.threads.forEach(t => {
         const b = t.board || 'random';
         counts[b] = (counts[b] || 0) + 1;
+        const ts = t.createdAt?._seconds || t.createdAt || 0;
+        if (!latest[b] || ts > latest[b]) latest[b] = ts;
       });
-      Object.entries(counts).forEach(([board, count]) => {
-        const el = document.getElementById(`bc-${board}`);
-        if (el) el.textContent = `(${count})`;
-      });
+
+      const ALL_BOARDS = ['sol','meme','degen','moon','ai','pol','tek','animal','trump','elon','random'];
+      ALL_BOARDS.sort((a, b) => (latest[b] || 0) - (latest[a] || 0));
+
+      const boardsGrid = document.getElementById('boardsGrid');
+      if (boardsGrid) {
+        boardsGrid.innerHTML = ALL_BOARDS.map(board =>
+          `<a href="/threads?board=${board}">/${board}/ <span>(${counts[board] || 0})</span></a>`
+        ).join('');
+      }
     }
     if (!data.success || !data.threads || data.threads.length === 0) {
       grid.innerHTML = '<span style="color:#888; font-size:11px;">&gt; No tokens launched yet.</span>';
@@ -138,13 +147,24 @@ function sleep(ms) {
     };
 
     const threads = data.threads.slice(0, 6);
-    grid.innerHTML = threads.map(t => {
+
+    // Fetch market data for top 6 in parallel
+    const marketResults = await Promise.allSettled(
+      threads.map(t => fetch(`/api/coin/${t.mint}`).then(r => r.json()))
+    );
+    const marketData = marketResults.map(r => r.status === 'fulfilled' && r.value.success ? r.value : null);
+
+    grid.innerHTML = threads.map((t, i) => {
       let imageUrl = t.image || '';
       const hasImage = imageUrl && !imageUrl.startsWith('mock://');
       const boardLabel = t.board && BOARDS[t.board] ? BOARDS[t.board] : '/random/';
       const name = escapeHtmlInline(t.name || '');
       const symbol = escapeHtmlInline(t.symbol || '');
       const replies = t.commentCount || 0;
+      const md = marketData[i];
+      const mcStr = md && md.marketCap ? 'MC: ' + formatCompact(md.marketCap) : '';
+      const volStr = md && md.volume24h ? 'Vol: ' + formatCompact(md.volume24h) : '';
+      const statsStr = [mcStr, volStr].filter(Boolean).join(' &nbsp;|&nbsp; ');
 
       return `
         <a class="popular-card" href="/thread/${t.mint}">
@@ -154,6 +174,7 @@ function sleep(ms) {
             : `<div class="popular-card-no-img">${symbol}</div>`
           }
           <span class="popular-card-title">${name} (${symbol})</span>
+          ${statsStr ? `<span class="popular-card-stats">${statsStr}</span>` : ''}
           <span class="popular-card-sub">${replies} ${replies === 1 ? 'reply' : 'replies'}</span>
         </a>`;
     }).join('');
@@ -161,6 +182,12 @@ function sleep(ms) {
     console.error('Error loading popular threads:', e);
   }
 })();
+
+function formatCompact(n) {
+  if (n >= 1_000_000) return '$' + (n / 1_000_000).toFixed(1) + 'M';
+  if (n >= 1_000) return '$' + (n / 1_000).toFixed(1) + 'K';
+  return '$' + n.toFixed(0);
+}
 
 function escapeHtmlInline(s) {
   const d = document.createElement('div');

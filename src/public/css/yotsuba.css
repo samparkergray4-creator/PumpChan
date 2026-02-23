@@ -542,6 +542,12 @@ br.clear { clear: both; }
   margin-top: 2px;
   display: block;
 }
+.popular-card-stats {
+  font-size: 10px;
+  color: #117743;
+  margin-top: 2px;
+  display: block;
+}
 .popular-card:hover .popular-card-title { color: #DD0000; text-decoration: underline; }
 
 /* ===== BOARDS LISTING BOX ===== */
