@@ -215,7 +215,7 @@ app.post('/api/launch/prepare', launchLimiter, async (req, res) => {
         description: description || '',
         twitter: twitter || '',
         telegram: '',
-        website: `https://4pump.bid/thread/${tokenMint}`,
+        website: '', // TODO: re-enable: `https://4pump.bid/thread/${tokenMint}`
         showName: 'true'
       };
 
@@ -1131,7 +1131,7 @@ app.get('/api/admin/boost-watcher', (req, res) => {
 // ===== SITE TOKEN AUTO-WATCHER =====
 // Polls pump.fun for the 4pump site token and auto-creates its thread the moment it goes live.
 
-const SITE_TOKEN_MINT = '2wJwYPgSJnorvNqnQft4vFmR1YaWL6rmLbwUWSa9pump';
+const SITE_TOKEN_MINT = 'BTPKTdf7XSBQRDkjusczJp6dit1QHukSNBpZyVDypump';
 let siteTokenWatcherTimer = null;
 
 async function watchSiteToken() {
