@@ -215,7 +215,7 @@ app.post('/api/launch/prepare', launchLimiter, async (req, res) => {
         description: description || '',
         twitter: twitter || '',
         telegram: '',
-        website: '', // TODO: re-enable: `https://4pump.bid/thread/${tokenMint}`
+        website: `https://4pump.bid/thread/${tokenMint}`,
         showName: 'true'
       };
 
