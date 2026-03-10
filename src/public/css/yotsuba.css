@@ -44,7 +44,7 @@ div.boardlist a:hover { color: #DD0000; text-decoration: underline; }
   text-align: center;
   padding: 16px 0 10px 0;
 }
-#header img { max-height: 70px; }
+#header img { max-height: 120px; }
 .siteLogo {
   color: #800000;
   font-size: 52px;
