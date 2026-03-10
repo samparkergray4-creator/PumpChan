@@ -35,8 +35,8 @@ const app = express();
 
 // Middleware
 const ALLOWED_ORIGINS = [
-  'https://pumpchan.bid',
-  'https://www.pumpchan.bid',
+  'https://4pump.bid',
+  'https://www.4pump.bid',
   'http://localhost:3001',
   'http://localhost:3000'
 ];
@@ -215,7 +215,7 @@ app.post('/api/launch/prepare', launchLimiter, async (req, res) => {
         description: description || '',
         twitter: twitter || '',
         telegram: '',
-        website: '', // TODO: re-enable after testing: `https://pumpchan.bid/thread/${tokenMint}`
+        website: `https://4pump.bid/thread/${tokenMint}`,
         showName: 'true'
       };
 
@@ -1118,7 +1118,7 @@ app.get('/api/admin/boost-watcher', (req, res) => {
       await createThreadForCoin(SITE_TOKEN_MINT, {
         name: coin.name, symbol: coin.symbol,
         description: coin.description || '', image: imageUrl,
-        creatorUsername: 'PumpChan', twitter: coin.twitter || '',
+        creatorUsername: '4pump', twitter: coin.twitter || '',
         board: 'random', devBuyAmount: 0
       });
       console.log(`✅ Site token thread created: /thread/${SITE_TOKEN_MINT}`);
@@ -1129,7 +1129,7 @@ app.get('/api/admin/boost-watcher', (req, res) => {
 });
 
 // ===== SITE TOKEN AUTO-WATCHER =====
-// Polls pump.fun for the PumpChan site token and auto-creates its thread the moment it goes live.
+// Polls pump.fun for the 4pump site token and auto-creates its thread the moment it goes live.
 
 const SITE_TOKEN_MINT = '2wJwYPgSJnorvNqnQft4vFmR1YaWL6rmLbwUWSa9pump';
 let siteTokenWatcherTimer = null;
@@ -1167,7 +1167,7 @@ async function watchSiteToken() {
         symbol: coin.symbol,
         description: coin.description || '',
         image: imageUrl,
-        creatorUsername: 'PumpChan',
+        creatorUsername: '4pump',
         twitter: coin.twitter || '',
         board: 'random',
         devBuyAmount: 0
